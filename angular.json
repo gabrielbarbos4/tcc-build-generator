@@ -26,6 +26,8 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              { "glob": "champion.json", "input": "./", "output": "./assets/" },
+              "src/assets",
               {
                 "glob": "**/*",
                 "input": "public"
