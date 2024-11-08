@@ -1,6 +1,6 @@
 <div class="main-container">
   <img class="background-image" src="assets/orn-background-2.jpg" alt="">
-  <button>Gerar build</button>
+  <button class="button-69" role="button" (click)="generateBuild()">Gerar Build</button>
   <div class="champion-box">
     <div class="inside-content-wrapper">
 
@@ -14,7 +14,7 @@
       <div class="select-champion-container" *ngIf="!loadingChampions">
         <ng-container *ngFor="let champ of champions">
           <div class="default-image-name-container" (click)="onSelectChampion(1, champ.name)">
-            <img class="default-image-config-w-m" [src]="champ.displayImage" alt="Place image title" itemtype="rounded">
+            <img class="default-image-config-w-m" [src]="champ.displayImage" itemtype="rounded">
             <p>{{ champ.name }}</p>
             <span class="title">{{ champ.title }}</span>
             <div class="difficult-container" *ngIf="getDifficult(champ.info.difficulty) as difficult">
@@ -22,7 +22,7 @@
                 style="height: 16px; width: 16px; border-radius: 50%; display: flex; margin-right: 8px"
                 [ngStyle]="{ 'border': '3px solid ' + difficult.color }">
               </span>
-              <span [ngStyle]="{ 'color': difficult.color }">{{ difficult.difficult }}</span>
+              <span [style.color]="difficult.color">{{ difficult.difficult }}</span>
             </div>
           </div>
         </ng-container>
@@ -58,12 +58,17 @@
   </div>
 
   <div class="result-container">
-    <span class="default-image-config">teste</span>
-    <span class="default-image-config">teste</span>
-    <span class="default-image-config">teste</span>
-    <span class="default-image-config">teste</span>
-    <span class="default-image-config">teste</span>
+    <ng-container *ngFor="let i of generatedItems">
+      <div class="item-container">
+        <img
+          style="border-radius: 50%"
+          class="default-image-config-w-m"
+          [src]="i.displayImage" itemtype="rounded"
+          [style.border]="'2px solid #456083'">
+        <span>{{ i.name }}</span>
+      </div>
+    </ng-container>
   </div>
 
-<!--  <img style="position: absolute; width: 50%; height: 50%" class="default-image-config-w-m" [src]="imageToShow" alt="Place image title">-->
+  <!--  <img style="position: absolute; width: 50%; height: 50%" class="default-image-config-w-m" [src]="imageToShow" alt="Place image title">-->
 </div>

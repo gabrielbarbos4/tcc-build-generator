@@ -27,6 +27,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               { "glob": "champion.json", "input": "./", "output": "./assets/" },
+              { "glob": "item.json", "input": "./", "output": "./assets/" },
               "src/assets",
               {
                 "glob": "**/*",

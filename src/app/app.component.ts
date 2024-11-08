@@ -17,13 +17,15 @@ export class AppComponent implements OnInit {
   title = 'tcc-build-generator';
 
   imageChampionUrl = "http://localhost:4200/assets/image/champion/";
-  imageItemUrl = "https://ddragon.leagueoflegends.com/cdn/14.22.1/img/item/"
+  imageItemUrl = "http://localhost:4200/assets/image/item/"
 
+  generatedItems: any= [];
   champions: any = [];
   selectedChampion1: any = undefined;
   selectedChampion2: any = undefined;
   imageToShow: any = undefined;
   loadingChampions = true;
+  loadingBuild = false;
 
   ngOnInit() {
     this.http.get("http://localhost:4200/assets/champion.json")
@@ -60,7 +62,7 @@ export class AppComponent implements OnInit {
   }
 
   getItemImage(id: any) {
-    return this.http.get(this.imageItemUrl + id + ".png", { responseType: 'blob' }).pipe(
+    return this.http.get(this.imageItemUrl + id, { responseType: 'blob' }).pipe(
       map((blob:  any) => URL.createObjectURL(blob))
     );
   }
@@ -91,5 +93,38 @@ export class AppComponent implements OnInit {
     if (dificult < 5) {
       return { difficult: "Fácil", color: "#388E3C" };
     }
+  }
+
+  generateBuild() {
+    if(!this.selectedChampion1 || !this.selectedChampion2) return;
+
+    this.generatedItems = [];
+    this.loadingBuild = true;
+
+    this.http.get("http://localhost:4200/assets/item.json")
+      .pipe(
+        switchMap((items: any) => {
+          let itemArray: any = [];
+          Object.keys(items.data).forEach(key => itemArray.push(items.data[key]));
+
+          itemArray = itemArray.slice(0, 6)
+          return from(itemArray);
+        }),
+        mergeMap((item: any) => {
+          console.log(item.image)
+          return this.getItemImage(item.image.full).pipe(
+            map((displayImage: any) => {
+              const formedItem = {
+                displayImage,
+                name: item.name
+              }
+              this.generatedItems.push(formedItem);
+              return item;
+            })
+          );
+        }),
+        toArray(),
+        finalize(() => this.loadingChampions = false)
+      ).subscribe((e:any) => console.log(e));
   }
 }
