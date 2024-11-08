@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { finalize, from, map, mergeMap, of, switchMap, toArray } from "rxjs";
 import { NgForOf, NgIf, NgStyle } from "@angular/common";
+import { prod_environment } from "../env/environment.prod";
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,8 @@ export class AppComponent implements OnInit {
 
   title = 'tcc-build-generator';
 
-  imageChampionUrl = "http://localhost:4200/assets/image/champion/";
-  imageItemUrl = "http://localhost:4200/assets/image/item/"
+  imageChampionUrl = `https://${prod_environment.VERCEL_PROJECT_PRODUCTION_URL}/assets/image/champion/`;
+  imageItemUrl = `https://${prod_environment.VERCEL_PROJECT_PRODUCTION_URL}/assets/image/item/`
 
   generatedItems: any= [];
   champions: any = [];
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit {
   loadingBuild = false;
 
   ngOnInit() {
-    this.http.get("http://localhost:4200/assets/champion.json")
+    this.http.get(`https://${prod_environment.VERCEL_PROJECT_PRODUCTION_URL}/assets/champion.json`)
       .pipe(
         switchMap((champion: any) => {
           const championsArray: any = [];
@@ -52,13 +53,6 @@ export class AppComponent implements OnInit {
       });
 
     this.getItemImage(1001);
-    this.getSplashImage();
-  }
-
-  getSplashImage() {
-    return this.http.get("https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", { responseType: 'blob' }).subscribe(
-      (blob:  any) => this.imageToShow = URL.createObjectURL(blob)
-    );
   }
 
   getItemImage(id: any) {
@@ -101,13 +95,13 @@ export class AppComponent implements OnInit {
     this.generatedItems = [];
     this.loadingBuild = true;
 
-    this.http.get("http://localhost:4200/assets/item.json")
+    this.http.get(`https://${prod_environment.VERCEL_PROJECT_PRODUCTION_URL}/assets/item.json`)
       .pipe(
         switchMap((items: any) => {
           let itemArray: any = [];
           Object.keys(items.data).forEach(key => itemArray.push(items.data[key]));
 
-          itemArray = itemArray.slice(0, 6)
+          itemArray = itemArray.slice(120, 125)
           return from(itemArray);
         }),
         mergeMap((item: any) => {
