@@ -9,7 +9,7 @@ const envFile = `export const environment = {
 };
 `;
 
-const targetPath = path.join(__dirname, './src/environments/environment.prod.ts');
+const targetPath = path.join(__dirname, './src/env/environment.prod.ts');
 
 fs.writeFile(targetPath, envFile, (err) => {
   if (err) {

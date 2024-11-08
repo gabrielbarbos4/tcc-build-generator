@@ -1,3 +1,3 @@
-export const prod_environment = {
-  VERCEL_PROJECT_PRODUCTION_URL: ''
-}
+export const environment = {
+    VERCEL_PROJECT_PRODUCTION_URL: 'undefined',
+};
